@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07182e">
+<title>北海道179市町村 まちのコ図鑑｜Grand Journey</title>
+<style>
+:root{--night:#061426;--navy:#102f55;--ice:#dff6ff;--gold:#ffd979;--pink:#ff88a8;--green:#72d6b1;--text:#f7fbff}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif;background:#061426;color:var(--text)}
+body{background:radial-gradient(circle at 50% 8%,#17456d 0,#0b2745 30%,#061426 70%);overflow-x:hidden}
+button{font:inherit}.app{max-width:560px;margin:auto;min-height:100vh;padding:14px 12px calc(28px + env(safe-area-inset-bottom))}
+.screen{display:none}.screen.active{display:block}
+.card{background:linear-gradient(180deg,rgba(18,52,83,.92),rgba(7,26,48,.96));border:1px solid rgba(220,245,255,.2);border-radius:26px;padding:17px;box-shadow:0 18px 50px rgba(0,0,0,.28)}
+.center{text-align:center}.eyebrow{font-size:11px;letter-spacing:.18em;color:#b9eaff;font-weight:900}.title{font-size:34px;line-height:1.05;margin:8px 0;color:white;text-shadow:0 0 24px rgba(127,211,255,.4)}
+.subtitle{color:#cfe9f8;line-height:1.7}.btn{width:100%;min-height:54px;border:0;border-radius:999px;padding:12px 18px;font-weight:900;margin-top:9px}
+.primary{background:linear-gradient(90deg,#eaf9ff,#ffe8a5);color:#10243c;box-shadow:0 0 25px rgba(255,225,137,.25)}
+.secondary{background:rgba(255,255,255,.08);color:white;border:1px solid rgba(255,255,255,.2)}
+.sky{height:220px;position:relative;overflow:hidden;border-radius:22px;background:linear-gradient(#071a35,#123f68 64%,#d9f2f6)}
+.star{position:absolute;width:3px;height:3px;background:white;border-radius:50%;box-shadow:0 0 8px white;animation:twinkle 2s infinite alternate}
+@keyframes twinkle{to{opacity:.25;transform:scale(.7)}}.snow{position:absolute;color:white;opacity:.8;animation:fall 6s linear infinite}@keyframes fall{to{transform:translateY(230px) rotate(180deg)}}
+.hokkaido{font-size:92px;filter:drop-shadow(0 0 24px #80d8ff);margin-top:50px;display:inline-block;animation:pulse 3s ease-in-out infinite}@keyframes pulse{50%{filter:drop-shadow(0 0 40px #ffe48c);transform:scale(1.03)}}
+.counter{font-size:44px;font-weight:1000;color:var(--gold)}.small{font-size:12px;color:#b9cfde;line-height:1.6}
+.map{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:12px}.node{min-height:102px;border-radius:18px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:white;padding:10px;text-align:center;position:relative}.node.locked{filter:grayscale(1);opacity:.43}.node.done{background:linear-gradient(160deg,rgba(94,211,173,.26),rgba(255,221,121,.15));box-shadow:0 0 22px rgba(111,221,188,.13)}.node .emoji{font-size:32px}.node b{display:block;font-size:13px}.node span{font-size:10px;color:#c9dce8}
+.progress{height:9px;background:#18334c;border-radius:99px;overflow:hidden;margin:10px 0}.progress i{height:100%;display:block;background:linear-gradient(90deg,#77ddff,#ffd875,#ff8fad)}
+.encounter{font-size:96px;text-align:center;margin:15px 0;filter:drop-shadow(0 12px 15px rgba(0,0,0,.25));animation:float 2.5s ease-in-out infinite}@keyframes float{50%{transform:translateY(-8px)}}
+.quote{padding:14px;border-radius:17px;background:rgba(255,255,255,.07);line-height:1.7;font-weight:800;margin:10px 0}
+.hint{padding:11px;border-left:3px solid var(--gold);background:rgba(255,220,120,.08);margin:8px 0;border-radius:0 12px 12px 0}
+.choice{background:rgba(255,255,255,.09);color:white;border:1px solid rgba(255,255,255,.18)}
+.reveal{background:linear-gradient(180deg,#fff9e8,#eafaff);color:#17314b}.reveal .name{font-size:38px;color:#e95f87;font-weight:1000}.stamp{display:inline-block;border:3px double #e85f82;border-radius:50%;padding:16px;color:#d84d72;font-weight:1000;transform:rotate(-8deg)}
+.zukan{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.zcard{aspect-ratio:.82;border-radius:15px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:5px}.zcard.unknown{color:#688198}.zcard .e{font-size:31px}.zcard b{font-size:11px}.flash{animation:flash 1s ease}@keyframes flash{0%,100%{box-shadow:none}40%{box-shadow:0 0 80px 25px rgba(255,232,144,.8)}}
+.nav{display:flex;gap:6px;position:sticky;bottom:8px;margin-top:14px}.nav button{flex:1;font-size:11px;min-height:46px;border-radius:16px;background:#102d49;color:#dff5ff;border:1px solid #31536d}
+</style>
+</head>
+<body><main class="app">
+<section id="intro" class="screen active"><div class="card center">
+<div class="sky" id="sky"><div class="hokkaido">❄</div></div>
+<div class="eyebrow">HOKKAIDO GRAND JOURNEY</div><h1 class="title">北海道179市町村<br>まちのコ図鑑</h1>
+<p class="subtitle">この大地には、<b>179の出会い</b>が眠っている。<br>小さな光を集めて、あなたの北海道を完成させよう。</p>
+<button class="btn primary" onclick="start()">旅をはじめる</button>
+<p class="small">可愛さ × 壮大さ × ワクワク × 北海道を好きになる｜試遊版 Chapter 1</p></div></section>
+
+<section id="world" class="screen"><div class="card">
+<div class="eyebrow">YOUR HOKKAIDO</div><div class="counter"><span id="got">0</span><small style="font-size:18px"> / 179</small></div>
+<div class="progress"><i id="prog" style="width:0%"></i></div>
+<p id="worldmsg" class="subtitle">最初の光が、あなたを待っています。</p>
+<div id="map" class="map"></div>
+    <div class="quote" style="margin-top:14px;font-size:13px">✦ 町を知るたび、北海道は「地図」から「行きたい場所」に変わっていく。</div>
+    </div><div class="nav"><button onclick="show('world')">旅MAP</button><button onclick="showZukan()">図鑑</button><button onclick="showVillage()">村</button></div></section>
+
+<section id="play" class="screen"><div class="card" id="playcard"></div></section>
+<section id="book" class="screen"><div class="card"><div class="eyebrow">MACHINOKO ZUKAN</div><h2>出会いの図鑑</h2><div id="zukan" class="zukan"></div></div><div class="nav"><button onclick="show('world')">旅MAP</button><button onclick="showZukan()">図鑑</button><button onclick="showVillage()">村</button></div></section>
+<section id="village" class="screen"><div class="card center"><div class="eyebrow">MY HOKKAIDO</div><h2>まちのコの村</h2><div id="villagers" style="font-size:48px;line-height:1.5"></div><p id="vtext" class="subtitle"></p>
+    <div style="margin-top:15px;padding:13px;border-radius:17px;background:rgba(255,255,255,.07);text-align:left">
+      <b>PROJECT VISION</b>
+      <p class="small" style="margin-bottom:0">179の町を、179の“行ってみたい”に。<br>有名な都市も小さな村も、ひとつの大切な出会いとしてつなぐ北海道の旅。</p>
+    </div></div><div class="nav"><button onclick="show('world')">旅MAP</button><button onclick="showZukan()">図鑑</button><button onclick="showVillage()">村</button></div></section>
+</main>
+<script>
+const towns=[
+{town:"札幌市",name:"ぽろろん",e:"❄️",line:"雪の夜って、街の光がいちばんきれいなんだよ。",h:["北海道最大の都市","冬の大きな雪のイベント","大通公園や味噌ラーメンでも知られる"],c:["札幌市","旭川市","函館市"],pr:"大通公園・さっぽろ雪まつり・味噌ラーメン",gift:"北のまち広場"},
+{town:"函館市",name:"いかりん",e:"🦑",line:"海の向こうまで、きらきら見える夜が好き。",h:["港町","イカで知られる","山から眺める夜景が有名"],c:["小樽市","函館市","根室市"],pr:"函館山の夜景・港・イカ",gift:"星灯りの港"},
+{town:"小樽市",name:"たるり",e:"💎",line:"光がガラスを通ると、ちょっとだけ魔法になるよ。",h:["歴史ある港町","ガラス工芸","運河の景観で知られる"],c:["小樽市","室蘭市","釧路市"],pr:"小樽運河・ガラス工芸",gift:"ガラスの工房"},
+{town:"夕張市",name:"メロロ",e:"🍈",line:"ほめられると……葉っぱまで赤くなっちゃう。",h:["山あいのまち","甘い果物が有名","夕張メロンで知られる"],c:["富良野市","夕張市","北見市"],pr:"夕張メロン",gift:"メロン畑"},
+{town:"富良野市",name:"らべり",e:"💜",line:"いい香りの丘で、少しだけお昼寝しない？",h:["北海道のほぼ中央部","紫色の花畑","ラベンダー観光で知られる"],c:["美瑛町","富良野市","北竜町"],pr:"ラベンダー畑・田園風景",gift:"香りの丘"}
+];
+let state=JSON.parse(localStorage.getItem("machiGrand")||'{"done":[]}'),cur=0,hints=0;
+function save(){localStorage.setItem("machiGrand",JSON.stringify(state))}
+function show(id){document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");scrollTo(0,0)}
+function start(){renderMap();show("world")}
+function renderMap(){let n=state.done.length;got.textContent=n;prog.style.width=Math.max(1,n/179*100)+"%";worldmsg.textContent=n?`あなたの北海道に ${n} つの光が灯った。まだ ${179-n} の出会いが眠っている。`:"最初の光が、あなたを待っています。";map.innerHTML=towns.map((t,i)=>{let d=state.done.includes(i),open=i===0||state.done.includes(i-1);return `<button class="node ${d?'done':''} ${open?'':'locked'}" ${open?`onclick="encounter(${i})"`:"disabled"}><div class="emoji">${d?t.e:"✦"}</div><b>${d?t.town:"？？？"}</b><span>${d?t.name:(open?"光を調べる":"まだ遠い")}</span></button>`}).join("")}
+function encounter(i){cur=i;hints=0;let t=towns[i];show("play");playcard.innerHTML=`<div class="eyebrow">ENCOUNTER ${i+1}</div><div class="encounter">❔</div><h2 class="center">まだ名も知らない、まちのコ</h2><div class="quote">「${t.line}」</div><p class="small center">このコが暮らす町はどこ？ 見た目・言葉・ご当地の手がかりから推理しよう。</p><div id="harea"></div><button class="btn secondary" onclick="hint()">手がかりを見る</button><div id="choices">${t.c.map(x=>`<button class="btn choice" onclick="answer('${x}')">${x}</button>`).join("")}</div>`}
+function hint(){let t=towns[cur];if(hints<t.h.length){harea.innerHTML+=`<div class="hint">✦ ${t.h[hints++]}</div>`}}
+function answer(x){let t=towns[cur];if(x!==t.town){playcard.classList.add("flash");setTimeout(()=>playcard.classList.remove("flash"),800);return} if(!state.done.includes(cur))state.done.push(cur);save();playcard.className="card reveal";playcard.innerHTML=`<div class="center"><div class="eyebrow" style="color:#49728d">NEW FRIEND</div><div class="encounter">${t.e}</div><div class="townname">${t.town}</div><div class="name">${t.name}</div><p>図鑑に新しい光が灯った！</p><div class="stamp">図鑑登録<br>${state.done.length} / 179</div></div><div class="quote" style="color:#21405a">まちの宝物 ✦ ${t.pr}</div>
+    <div style="margin:12px 0;padding:12px;border-radius:16px;background:#f2fbff;color:#24455d;border:1px solid #cfe8f2">
+      <b>🏔 いつか、本当の町へ</b><br>
+      <span style="font-size:13px;line-height:1.7">ゲームで知った町を、いつか旅先の候補へ。将来は自治体監修のおすすめ・季節イベント・現地限定の思い出をここに追加できます。</span>
+    </div>
+    <p>村に <b>「${t.gift}」</b> が建ちました。</p><button class="btn primary" onclick="next()">北海道へ戻る</button>`}
+function next(){playcard.className="card";renderMap();show("world")}
+function showZukan(){zukan.innerHTML=Array.from({length:30},(_,i)=>{let t=towns[i],d=state.done.includes(i);return t&&d?`<div class="zcard"><div class="e">${t.e}</div><b>${t.town}<br>${t.name}</b></div>`:`<div class="zcard unknown"><div class="e">?</div><b>${String(i+1).padStart(3,"0")}<br>未発見</b></div>`}).join("");show("book")}
+function showVillage(){let ds=state.done.map(i=>towns[i]);villagers.innerHTML=ds.length?ds.map(t=>t.e).join(" "):"🌱";vtext.textContent=ds.length?`${ds.length}体のまちのコが暮らしています。旅を続けるほど、この場所は“あなたの北海道”になっていきます。`:"まだ静かな土地。最初のまちのコを迎えに行こう。";show("village")}
+for(let i=0;i<30;i++){let s=document.createElement("i");s.className="star";s.style.left=Math.random()*100+"%";s.style.top=Math.random()*75+"%";s.style.animationDelay=Math.random()*2+"s";sky.appendChild(s)}
+for(let i=0;i<16;i++){let s=document.createElement("span");s.className="snow";s.textContent="•";s.style.left=Math.random()*100+"%";s.style.top=(-Math.random()*220)+"px";s.style.animationDelay=Math.random()*6+"s";sky.appendChild(s)}
+</script></body></html>
