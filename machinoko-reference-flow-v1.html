@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>北海道179市町村 まちのコ図鑑</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:#071c3c;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif}
+#app{max-width:430px;margin:auto;min-height:100svh;background:#0b2850;position:relative;overflow:hidden}
+.screen{display:none;min-height:100svh;position:relative;background:#0b2850;align-items:center;justify-content:center}
+.screen.active{display:flex;animation:fade .28s ease}
+@keyframes fade{from{opacity:.2;transform:scale(.985)}}
+canvas{display:block;width:100%;height:auto;max-height:100svh;object-fit:contain}
+.hot{position:absolute;border:0;background:transparent;cursor:pointer;z-index:4}
+.hot:active{background:#fff3;border-radius:20px}
+#hint{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:20;background:#102f5de8;color:white;border:1px solid #ffffff55;border-radius:999px;padding:9px 14px;font-size:12px;opacity:0;transition:.2s;pointer-events:none;white-space:nowrap}
+.spark{position:absolute;inset:0;pointer-events:none;z-index:3;background:radial-gradient(circle at 50% 65%,#fff 0 2px,transparent 3px);background-size:55px 55px;animation:spark 1s linear;opacity:0}
+@keyframes spark{0%{opacity:0}40%{opacity:.8}100%{opacity:0;background-position:30px -60px}}
+</style>
+</head>
+<body>
+<div id="app">
+  <section class="screen active" data-i="0"><canvas></canvas><button class="hot" style="left:14%;right:14%;top:72%;height:10%" onclick="go(1)"></button></section>
+  <section class="screen" data-i="1"><canvas></canvas><button class="hot" style="left:34%;width:33%;top:38%;height:18%" onclick="go(2)"></button></section>
+  <section class="screen" data-i="2"><canvas></canvas><button class="hot" style="left:58%;right:4%;bottom:3%;height:10%" onclick="go(3)"></button></section>
+  <section class="screen" data-i="3"><canvas></canvas>
+    <button class="hot" style="left:4%;width:45%;top:37%;height:25%" onclick="correct(this)"></button>
+    <button class="hot" style="right:4%;width:45%;top:37%;height:25%" onclick="wrong()"></button>
+    <button class="hot" style="left:4%;width:45%;top:64%;height:25%" onclick="wrong()"></button>
+    <button class="hot" style="right:4%;width:45%;top:64%;height:25%" onclick="wrong()"></button>
+  </section>
+  <section class="screen" data-i="4"><canvas></canvas><div class="spark"></div><button class="hot" style="left:14%;right:14%;bottom:3%;height:11%" onclick="go(5)"></button></section>
+  <section class="screen" data-i="5"><canvas></canvas><button class="hot" style="left:0;right:0;top:0;height:100%" onclick="go(6)"></button></section>
+  <section class="screen" data-i="6"><canvas></canvas>
+    <button class="hot" style="left:3%;width:47%;bottom:2%;height:12%" onclick="go(7)"></button>
+    <button class="hot" style="right:3%;width:47%;bottom:2%;height:12%" onclick="go(7)"></button>
+  </section>
+  <section class="screen" data-i="7"><canvas></canvas><button class="hot" style="left:0;right:0;top:0;height:100%" onclick="restart()"></button></section>
+</div>
+<div id="hint"></div>
+<script>
+const crops=[
+ [0,0,384,562], [384,0,384,562], [768,0,384,562], [1152,0,384,562],
+ [0,562,384,462], [384,562,576,462], [960,562,340,462], [1300,562,236,462]
+];
+const img=new Image(); img.src="machinoko-ui-reference.jpg";
+img.onload=()=>document.querySelectorAll("canvas").forEach((c,i)=>draw(c,i));
+function draw(c,i){
+ const [x,y,w,h]=crops[i], dpr=Math.min(devicePixelRatio||1,2);
+ c.width=w*dpr;c.height=h*dpr;c.style.aspectRatio=w+"/"+h;
+ const ctx=c.getContext("2d");ctx.scale(dpr,dpr);ctx.drawImage(img,x,y,w,h,0,0,w,h);
+}
+function go(n){
+ document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+ const s=document.querySelector('.screen[data-i="'+n+'"]');s.classList.add("active");
+ if(n===4){localStorage.setItem("machinoko_sapporo","1");s.querySelector(".spark").style.animation="none";void s.offsetWidth;s.querySelector(".spark").style.animation="spark 1s linear"}
+ window.scrollTo(0,0)
+}
+function say(t){let h=document.getElementById("hint");h.textContent=t;h.style.opacity=1;clearTimeout(window.ht);window.ht=setTimeout(()=>h.style.opacity=0,1400)}
+function wrong(){say("おしい！ シマエナガのヒント：あったかい麺料理だよ 🍜")}
+function correct(){say("正解！ ぽろろん発見！ ✨");setTimeout(()=>go(4),650)}
+function restart(){go(0)}
+</script>
+</body></html>
