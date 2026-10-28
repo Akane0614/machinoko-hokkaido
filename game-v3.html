@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#eaf8ff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="まちのコ図鑑">
+<title>北海道179市町村 まちのコ図鑑</title>
+<style>
+:root{
+ --ink:#26394a;--muted:#6d7a86;--navy:#174a7c;--blue:#61b7e8;--pink:#ef6b98;--green:#66b88f;
+ --gold:#f1bb48;--cream:#fffaf0;--line:#d5e5ee;--white:#fff;--panel:#f7fbfd;
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",Meiryo,sans-serif;background:linear-gradient(#e9f7ff 0,#fff9ef 56%,#f2fbf5 100%);color:var(--ink);-webkit-text-size-adjust:100%}
+button{font:inherit;-webkit-tap-highlight-color:transparent}button:focus-visible{outline:3px solid #4c86ff;outline-offset:2px}
+#app{max-width:600px;margin:0 auto;padding:10px 10px calc(92px + env(safe-area-inset-bottom))}
+.screen{display:none}.screen.active{display:block}
+.card{background:rgba(255,255,255,.97);border:1px solid var(--line);border-radius:25px;padding:16px;box-shadow:0 8px 24px rgba(46,83,109,.08)}
+.hero{overflow:hidden;position:relative;text-align:center;padding:24px 16px;background:linear-gradient(180deg,#eaf8ff,#fff7ec)}
+.hero:before,.hero:after{content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.6);width:130px;height:130px;z-index:0}.hero:before{left:-55px;top:-55px}.hero:after{right:-65px;top:110px}
+.hero>*{position:relative;z-index:1}.eyebrow{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:6px 11px;background:white;font-size:12px;font-weight:900;color:var(--navy)}
+.logo{font-size:36px;line-height:1.05;font-weight:950;color:var(--navy);margin:12px 0 6px}.logo b{color:var(--pink)}.logo .n{color:var(--gold)}
+.sub{font-weight:800;color:var(--navy);line-height:1.5}.small{font-size:12px;color:var(--muted);line-height:1.55}
+.gallery{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:18px 0}.gallery img{width:100%;aspect-ratio:3/2;object-fit:cover;object-position:center;border-radius:16px;border:1px solid var(--line);display:block}
+.btn{width:100%;min-height:52px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--navy);font-weight:900;padding:11px 16px}.btn.primary{background:linear-gradient(180deg,#ff7fa9,#ec5f8c);color:#fff;border-color:#e45482;box-shadow:0 4px 0 #bf466b}.btn.blue{background:linear-gradient(180deg,#75c9f2,#4ca7df);color:white;border-color:#4194c8;box-shadow:0 4px 0 #347ead}.btn.gold{background:#fff4d3;border:2px solid #f0c65e;color:#73551a}.btn:active{transform:translateY(2px);box-shadow:none!important}.stack{display:grid;gap:11px}
+.topbar{display:flex;align-items:center;gap:9px;margin-bottom:10px}.progress{height:10px;background:#e6eff4;border-radius:999px;overflow:hidden;flex:1}.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--pink));width:0}.counter{white-space:nowrap;font-size:13px;font-weight:900;color:var(--navy)}
+.hub-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.hub-title{font-size:23px;font-weight:950;color:var(--navy);margin:0}.statrow{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.stat{border:1px solid var(--line);border-radius:15px;background:#fff;text-align:center;padding:9px 5px}.stat b{display:block;font-size:20px;color:var(--navy)}.stat small{font-size:10px;color:var(--muted)}
+.route{display:grid;gap:8px}.route-card{display:grid;grid-template-columns:48px 1fr auto;align-items:center;gap:10px;border:1px solid var(--line);border-radius:17px;padding:9px;background:#fff}.route-card.locked{opacity:.42}.route-card.current{outline:3px solid #ff8db1}.route-card.done{background:#f1fbf6}.route-num{height:42px;width:42px;border-radius:50%;display:grid;place-items:center;background:#eaf5fb;color:var(--navy);font-weight:950}.route-card.done .route-num{background:#d8f1e4}.route-card.current .route-num{background:#ffe3ed;color:#a8325a}.route-region{font-size:11px;color:var(--muted)}.mode-note{text-align:center;font-size:11px;color:var(--muted)}
+.charimg{width:100%;aspect-ratio:3/2;max-height:360px;object-fit:cover;object-position:center;border-radius:20px;border:1px solid var(--line);background:#eef7fb;display:block}.mystery{filter:blur(10px) grayscale(1) brightness(.43);transform:scale(.985)}.quote{border:1px solid var(--line);border-radius:18px;padding:14px;background:#fff;font-weight:850;color:var(--navy);font-size:17px;line-height:1.55}
+.hint{border:1px solid var(--line);border-radius:15px;padding:11px;background:#f7fcff}.hint b{color:var(--pink)}.choices{display:grid;grid-template-columns:1fr 1fr;gap:8px}.choice{min-height:50px;border:1px solid #a8d3e8;border-radius:16px;background:#fff;color:var(--navy);font-weight:900}.msg{min-height:22px;text-align:center;font-weight:850;color:#a63f62}
+.reveal{text-align:center}.reveal-title{font-size:27px;font-weight:950;color:#d44e62}.townname{display:inline-block;background:#edf7fc;border:1px solid var(--line);border-radius:999px;padding:6px 12px;color:var(--navy);font-weight:900}.charname{font-size:38px;color:var(--pink);font-weight:950}.stars{font-size:30px;letter-spacing:2px}.score-note{font-size:12px;color:var(--muted)}
+.confetti{position:relative;height:0;pointer-events:none}.confetti i{position:absolute;width:8px;height:14px;border-radius:3px;top:-15px;animation:fall 1.25s ease-out forwards}.confetti i:nth-child(odd){background:#f46f9a}.confetti i:nth-child(even){background:#66bfe9}.confetti i:nth-child(3n){background:#f0bd4e}.confetti i:nth-child(4n){background:#6abe91}@keyframes fall{to{transform:translate(var(--dx),150px) rotate(520deg);opacity:0}}
+.mini{border:1px solid var(--line);border-radius:20px;background:linear-gradient(#eff9ff,#fff9ed);padding:15px;text-align:center;min-height:285px}.mini h3{color:var(--navy);margin:3px 0 5px}.collect-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-top:18px}.collect{min-height:54px;border:1px solid var(--line);background:#fff;border-radius:13px;font-size:28px}.collect.hit{opacity:.2;transform:scale(.8);pointer-events:none}.timing-track{height:30px;border-radius:999px;background:linear-gradient(90deg,#e5edf1 0 36%,#91d4a5 36% 64%,#e5edf1 64%);margin:60px 6px 24px;position:relative}.timing-dot{position:absolute;width:49px;height:49px;border-radius:50%;background:var(--pink);top:-10px;left:0;box-shadow:0 3px 9px rgba(0,0,0,.15)}.memory-row{display:flex;justify-content:center;gap:9px;margin:24px 0}.memory-chip{min-width:72px;min-height:64px;border:2px solid var(--line);border-radius:15px;background:#fff;font-weight:950}.memory-chip[data-color="青"]{background:#d9f2ff}.memory-chip[data-color="桃"]{background:#ffe0ea}.memory-chip[data-color="水"]{background:#e6fbff}.memory-hide .memory-chip{color:transparent;background:#e7edf1}
+.profile-head{text-align:center}.heart{font-size:24px;letter-spacing:2px}.info-grid{display:grid;gap:8px}.info{border:1px solid var(--line);border-radius:15px;background:#fbfdff;padding:11px}.chip{display:inline-block;border-radius:999px;background:var(--green);color:white;font-weight:900;font-size:11px;padding:4px 8px;margin-bottom:5px}.stamp-card{border:2px dashed #d8b357;border-radius:18px;background:#fff8df;padding:12px;text-align:center}.stamp-icon{font-size:46px}.postcard{border-radius:18px;border:1px solid var(--line);overflow:hidden;background:#fff}.postcard img{width:100%;aspect-ratio:3/2;object-fit:cover;object-position:center;display:block}.postcard div{padding:10px}
+.village{background:linear-gradient(#cceeff 0 37%,#bde39e 37%);border:1px solid var(--line);border-radius:22px;padding:13px;min-height:320px}.village-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.vitem{background:rgba(255,255,255,.92);border:1px solid #fff;border-radius:15px;padding:8px;text-align:center}.vitem img{width:100%;aspect-ratio:3/2;object-fit:cover;object-position:center;border-radius:11px}.vitem b{display:block;color:var(--navy)}.vitem small{font-size:10px;color:var(--muted)}
+.book{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.bookcard{border:1px solid var(--line);border-radius:16px;background:#fff;overflow:hidden}.bookcard img{width:100%;aspect-ratio:3/2;object-fit:cover;object-position:center;display:block}.bookcard.locked img{filter:grayscale(1) brightness(.2);opacity:.65}.bookcard div{padding:8px;text-align:center}.bookcard b{color:var(--navy)}.bookcard small{color:var(--muted)}
+.badges{display:grid;gap:8px}.badge{display:grid;grid-template-columns:54px 1fr;gap:10px;align-items:center;border:1px solid var(--line);border-radius:16px;background:#fff;padding:10px}.badge.locked{opacity:.4}.badge-icon{height:50px;width:50px;border-radius:50%;display:grid;place-items:center;background:#fff5d7;font-size:26px}.badge b{color:var(--navy)}.badge small{display:block;color:var(--muted)}
+.end{text-align:center}.end .big{font-size:34px;line-height:1.2;font-weight:950;color:var(--navy)}.end .pct{font-size:22px;font-weight:900;color:var(--pink)}
+.nav{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:min(600px,100%);padding:8px 10px calc(8px + env(safe-area-inset-bottom));display:none;grid-template-columns:repeat(4,1fr);gap:5px;background:rgba(255,255,255,.95);border-top:1px solid var(--line);backdrop-filter:blur(12px);z-index:30}.nav.show{display:grid}.nav button{border:0;background:transparent;min-height:54px;border-radius:14px;color:var(--muted);font-weight:850;font-size:11px}.nav button span{display:block;font-size:22px}.nav button.active{background:#edf7fc;color:var(--navy)}
+.modal{display:none;position:fixed;inset:0;background:rgba(20,42,58,.42);z-index:50;padding:20px;align-items:center;justify-content:center}.modal.show{display:flex}.modal .card{width:min(440px,100%)}
+@media(max-width:370px){.choices{grid-template-columns:1fr}.gallery{grid-template-columns:repeat(4,1fr)}.logo{font-size:31px}.collect-grid{grid-template-columns:repeat(5,1fr)}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+
+@media (min-width:600px){
+  .gallery{grid-template-columns:repeat(4,1fr)}
+  .charimg{max-height:420px}
+}
+@media (max-width:380px){
+  .gallery{gap:6px}
+  .charimg{max-height:300px}
+}
+
+.sprite{background-image:url("characters-v3.jpg");background-size:400% 300%;background-repeat:no-repeat;background-position:var(--sx) var(--sy);background-color:#eef7fb}
+.gallery .sprite{width:100%;aspect-ratio:3/2;border-radius:16px;border:1px solid var(--line)}
+.charimg.sprite{display:block}
+.postcard .sprite{width:100%;aspect-ratio:3/2;display:block}
+.vitem .sprite{width:100%;aspect-ratio:3/2;border-radius:11px}
+.bookcard .sprite{width:100%;aspect-ratio:3/2;display:block}
+.bookcard.locked .sprite{filter:grayscale(1) brightness(.2);opacity:.65}
+</style>
+</head>
+<body>
+<main id="app">
+<section id="title" class="screen active">
+ <div class="card hero">
+  <div class="eyebrow">🎮 12体 安定表示版 v3</div>
+  <div class="logo">北海道 <span class="n">179</span>市町村<br><b>まちのコ図鑑</b></div>
+  <p class="sub">知らなかった町が、好きな町になる。</p>
+  <div id="titleGallery" class="gallery"></div>
+  <div class="stack">
+   <button id="newGame" class="btn primary">はじめから</button>
+   <button id="continueGame" class="btn blue" style="display:none">つづきから</button>
+  </div>
+  <p class="small">179の出会いで、わたしの北海道をつくろう。<br>※観光・名産情報は試作版。公開・商品化前に公式情報で最終確認する想定です。</p>
+ </div>
+</section>
+
+<section id="prologue" class="screen">
+ <div class="card stack">
+  <div class="eyebrow">PROLOGUE</div>
+  <h2 class="hub-title">北海道には、まだ知らない出会いがある。</h2>
+  <div id="prologueImg" class="charimg sprite" role="img" aria-label="ぽろろん"></div>
+  <p class="quote">旅の手帳には、179個の空欄。<br>町の特徴を手がかりに「まちのコ」を見つけると、その町のページが少しずつ埋まっていきます。</p>
+  <div class="info"><span class="chip">旅のルール</span><br>謎を解く → ご当地ミニゲーム → 仲良くなる → 村へ招待。ヒントを使わず正解すると★3評価！</div>
+  <button id="startJourney" class="btn primary">旅の手帳を受け取る</button>
+ </div>
+</section>
+
+<section id="game" class="screen">
+ <div class="topbar"><div class="progress"><i id="mainProgress"></i></div><div id="progressText" class="counter">0 / 12</div></div>
+ <div id="screen" class="card"></div>
+</section>
+</main>
+
+<nav id="nav" class="nav" aria-label="ゲームメニュー">
+ <button data-tab="map"><span>🗺️</span>旅する</button>
+ <button data-tab="village"><span>🏡</span>村</button>
+ <button data-tab="book"><span>📖</span>図鑑</button>
+ <button data-tab="badges"><span>🏅</span>実績</button>
+</nav>
+
+<div id="resetModal" class="modal" role="dialog" aria-modal="true" aria-label="データ初期化">
+ <div class="card stack"><h3>旅の記録を消しますか？</h3><p class="small">発見したまちのコ・★評価・村の施設・スタンプがすべて最初に戻ります。</p><button id="confirmReset" class="btn primary">最初からやり直す</button><button id="cancelReset" class="btn">キャンセル</button></div>
+</div>
+
+<script>
+const C=[{"id":1,"town":"札幌市","name":"ぽろろん","region":"道央","intro":"都会は好き。でも雪が降ると、もっと好き。","hints":["冬になると街が真っ白になるよ。","北海道で人口が最も多い都市だよ。","味噌ラーメンや大きな雪のイベントでも有名！"],"choices":["札幌市","旭川市","帯広市","函館市"],"motif":"雪・都市・とうきび","personality":"好奇心旺盛。にぎやかな街も雪遊びも大好き。","gourmet":"味噌ラーメン","spot":"大通公園","facility":"北のまち広場","stamp":"❄️","miniType":"collect","miniTitle":"雪の街をかざろう！","miniDesc":"雪の結晶を5個集めて、広場を冬色にしよう。","miniTarget":"❄️","miniPool":["❄️","⭐","🧊","🌽","❄️","❄️","✨","❄️","🍜","❄️"],"idx":0},{"id":2,"town":"函館市","name":"いかりん","region":"道南","intro":"昼より夜のほうが、ちょっと元気。","hints":["海のそばにいるよ。","海の生き物が町の食文化と深く関わっているよ。","山から見る夜景でも有名！"],"choices":["小樽市","函館市","根室市","釧路市"],"motif":"イカ・港・夜景","personality":"静かな夜が好き。少しロマンチスト。","gourmet":"イカ料理","spot":"函館山","facility":"夜景テラス","stamp":"🌙","miniType":"timing","miniTitle":"夜景を灯そう！","miniDesc":"光が中央のゾーンに入った瞬間にタップ！","idx":1},{"id":3,"town":"小樽市","name":"たるり","region":"道央","intro":"光を当てると、からだの色が変わる。","hints":["水辺の景色が有名だよ。","歴史ある建物が残っているよ。","ガラス工芸でも知られているよ。"],"choices":["小樽市","室蘭市","石狩市","留萌市"],"motif":"ガラス・運河","personality":"きらきらしたものを見つけるのが得意。","gourmet":"スイーツ・海鮮","spot":"小樽運河","facility":"ガラス工房","stamp":"🫧","miniType":"memory","miniTitle":"ガラス工房の色あわせ","miniDesc":"3色の順番を覚えて、同じ順番でタップしよう。","sequence":["青","桃","水"],"idx":2},{"id":4,"town":"夕張市","name":"メロロ","region":"道央","intro":"ぼくの甘さ、分かるかな？","hints":["体には細かな網目模様があるよ。","中身は鮮やかなオレンジ色。","北海道を代表する高級メロンで有名！"],"choices":["夕張市","富良野市","北見市","千歳市"],"motif":"メロン","personality":"甘えん坊だけど、ちょっと照れ屋。","gourmet":"夕張メロン","spot":"夕張のメロン畑","facility":"メロンカフェ","stamp":"🍈","miniType":"choice","miniTitle":"食べごろメロンを探せ！","miniDesc":"いちばん食べごろのメロンを選ぼう。","miniOptions":["🍈 つるが元気すぎる","🍈 香りがふんわり・おしりが少しやわらかい","🍈 まだ青くてかたい"],"miniCorrect":1,"idx":3},{"id":5,"town":"富良野市","name":"らべり","region":"道北","intro":"夏になると、紫色の香りに包まれる。","hints":["夏になると紫色の景色が広がるよ。","香りのよい植物がヒント。","ラベンダー畑で有名！"],"choices":["美瑛町","富良野市","上富良野町","中富良野町"],"motif":"ラベンダー・花","personality":"のんびり屋。香りのいい場所が大好き。","gourmet":"富良野チーズ","spot":"ラベンダー畑","facility":"香りの花畑","stamp":"💜","miniType":"timing","miniTitle":"花畑ベストショット","miniDesc":"シャッターチャンスでタップして、最高の一枚を撮ろう。","idx":4},{"id":6,"town":"根室市","name":"はなかに","region":"道東","intro":"大きなハサミ。でも花は踏まない。","hints":["北海道の東側にいるよ。","海の幸がとても豊富。","名前に『花』が入るカニが有名！"],"choices":["稚内市","根室市","紋別市","網走市"],"motif":"花咲ガニ・海","personality":"見た目は強そう。でも小さな花にやさしい。","gourmet":"花咲ガニ","spot":"納沙布岬","facility":"東の海食堂","stamp":"🦀","miniType":"collect","miniTitle":"海のごちそう仕分け","miniDesc":"花咲ガニを4匹見つけよう。","miniTarget":"🦀","miniPool":["🦀","🐟","🦐","🦀","🐚","🦀","🐙","🦀","🐟","🦐"],"idx":5},{"id":7,"town":"利尻町","name":"こんぶぅ","region":"道北","intro":"まあ、急がなくてもいいよ。だしが出るまで待とう。","hints":["島のまちのコだよ。","大きな山が見えるよ。","高級な昆布として有名！"],"choices":["礼文町","利尻町","奥尻町","稚内市"],"motif":"利尻昆布・利尻山","personality":"静かでやさしい。何事も急がない。","gourmet":"利尻昆布","spot":"利尻山","facility":"だし茶屋","stamp":"🌿","miniType":"timing","miniTitle":"最高のだしを作ろう","miniDesc":"いい頃合いで昆布を引き上げよう。","idx":6},{"id":8,"town":"美瑛町","name":"びえのん","region":"道北","intro":"待って！ここ、撮りたい！","hints":["丘がたくさんあるよ。","小麦畑など農村風景が広がるよ。","北海道を代表する美しい丘の景色で知られているよ。"],"choices":["美瑛町","富良野市","清水町","東川町"],"motif":"丘・小麦・写真","personality":"景色を見るとすぐ立ち止まる写真好き。","gourmet":"小麦・農産物","spot":"美瑛の丘陵風景","facility":"丘のパン工房","stamp":"📷","miniType":"choice","miniTitle":"丘のベストショット","miniDesc":"景色を大切にしながら撮影できる行動を選ぼう。","miniOptions":["農地の中に入って近づく","道路や決められた場所から撮る","作物の横に荷物を置く"],"miniCorrect":1,"idx":7},{"id":9,"town":"網走市","name":"こおるん","region":"道東","intro":"−2℃？ 今日あったかいね！","hints":["寒いほど元気になるよ。","海に白いものがやってくるよ。","冬の流氷で有名！"],"choices":["網走市","紋別市","稚内市","根室市"],"motif":"流氷・オホーツク海","personality":"寒いほど元気。暑い場所はちょっと苦手。","gourmet":"オホーツクの海産物","spot":"流氷観光","facility":"流氷ひろば","stamp":"🧊","miniType":"collect","miniTitle":"流氷ルートをつなげ！","miniDesc":"流氷を5個集めて海の道をつなごう。","miniTarget":"🧊","miniPool":["🧊","❄️","🌊","🧊","🐟","🧊","🚢","🧊","❄️","🧊"],"idx":8},{"id":10,"town":"猿払村","name":"さるほた","region":"道北","intro":"話しかけても反応なし。……パカッ。","hints":["北海道北部の村だよ。","海の幸で知られているよ。","大きな天然ホタテが有名！"],"choices":["猿払村","枝幸町","浜頓別町","豊富町"],"motif":"天然ホタテ・海","personality":"おだやか。少し照れると殻を閉じる。","gourmet":"天然ホタテ","spot":"オホーツクの海","facility":"北の浜辺","stamp":"🐚","miniType":"choice","miniTitle":"ホタテを見つけよう","miniDesc":"猿払村の名産を選ぼう。","miniOptions":["🐚 天然ホタテ","🍎 りんご","🍇 ぶどう"],"miniCorrect":0,"idx":9},{"id":11,"town":"旭川市","name":"ゆきもく","region":"道北","intro":"壊れた？ 直してあげる。","hints":["北海道の大きな都市のひとつ。","家具や木工でも知られているよ。","ラーメンや有名な動物園もヒント！"],"choices":["旭川市","札幌市","北見市","帯広市"],"motif":"木工・雪","personality":"手先が器用。壊れたものを見ると放っておけない。","gourmet":"旭川ラーメン","spot":"旭山動物園","facility":"北の木工房","stamp":"🪵","miniType":"collect","miniTitle":"木のおもちゃを作ろう","miniDesc":"木のパーツを4つ集めて完成させよう。","miniTarget":"🪵","miniPool":["🪵","🔩","🪵","🧰","🪵","🎨","🪵","❄️","🧩","🔨"],"idx":10},{"id":12,"town":"帯広市","name":"たれとん","region":"道東","intro":"……いい匂い！","hints":["北海道東部の農業地帯にいるよ。","甘辛いタレがヒント。","ご飯の上に豚肉をのせる名物料理で有名！"],"choices":["帯広市","芽室町","清水町","音更町"],"motif":"豚丼・十勝","personality":"食いしん坊で仲間思い。いい匂いに敏感。","gourmet":"豚丼","spot":"ばんえい十勝","facility":"十勝食堂","stamp":"🐷","miniType":"timing","miniTitle":"豚丼を仕上げよう！","miniDesc":"タレがいちばんおいしく絡むタイミングでタップ。","idx":11}];
+const KEY="machinoko-v2.1-save";
+let state={started:false,current:0,found:[],stars:{},hearts:{},facilities:[],stamps:[],wrong:0,hints:0};
+let activeTab="map";
+let timerId=null;
+
+function load(){
+ try{const x=JSON.parse(localStorage.getItem(KEY));if(x&&typeof x.current==="number")state={...state,...x};}catch(e){}
+}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+function show(id){document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");window.scrollTo({top:0,behavior:"smooth"});}
+function setNav(showIt){document.getElementById("nav").classList.toggle("show",showIt);}
+function progress(){
+ const n=state.found.length;
+ document.getElementById("mainProgress").style.width=(n/12*100)+"%";
+ document.getElementById("progressText").textContent=n+" / 12";
+}
+function setTab(tab){
+ activeTab=tab;
+ document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("active",b.dataset.tab===tab));
+}
+function discovered(i){return state.found.includes(i);}
+function c(){return C[Math.min(state.current,C.length-1)];}
+function starsForCurrent(){
+ const penalty=state.hints+state.wrong;
+ return penalty===0?3:penalty<=2?2:1;
+}
+function starText(n){return "★".repeat(n)+"☆".repeat(3-n);}
+function heartText(n){return "♥".repeat(n)+"♡".repeat(3-n);}
+function spritePos(i){
+ const col=i%4,row=Math.floor(i/4);
+ const xs=[0,33.333,66.667,100],ys=[0,50,100];
+ return `--sx:${xs[col]}%;--sy:${ys[row]}%`;
+}
+function spriteDiv(i,cls="",label=""){
+ return `<div class="sprite ${cls}" style="${spritePos(i)}" role="img" aria-label="${label||C[i].name}"></div>`;
+}
+function setSprite(el,i,label=""){el.style.setProperty("--sx",[0,33.333,66.667,100][i%4]+"%");el.style.setProperty("--sy",[0,50,100][Math.floor(i/4)]+"%");if(label)el.setAttribute("aria-label",label);}
+
+function title(){
+ document.getElementById("titleGallery").innerHTML=[0,3,8,11].map(i=>spriteDiv(i,"",C[i].name)).join("");
+ setSprite(document.getElementById("prologueImg"),0,C[0].name);
+ document.getElementById("continueGame").style.display=state.started?"block":"none";
+}
+function hub(){
+ setNav(true);show("game");progress();setTab("map");
+ const found=state.found.length, totalStars=Object.values(state.stars).reduce((a,b)=>a+b,0);
+ const stamps=state.stamps.length;
+ document.getElementById("screen").innerHTML=`
+ <div class="stack">
+  <div class="hub-head"><div><div class="eyebrow">旅の手帳</div><h2 class="hub-title">次の町へ出発しよう</h2></div><button id="settings" class="btn" style="width:auto;min-height:44px;padding:8px 13px">⚙️</button></div>
+  <div class="statrow"><div class="stat"><b>${found}</b><small>発見</small></div><div class="stat"><b>${totalStars}</b><small>★合計</small></div><div class="stat"><b>${stamps}</b><small>スタンプ</small></div></div>
+  <div class="info"><span class="chip">北海道発見率</span><br><b>${(found/179*100).toFixed(1)}%</b>　<span class="small">まずは12体の試作ルートを旅します。</span></div>
+  <div class="route">${C.map((x,i)=>`
+    <div class="route-card ${discovered(i)?"done":i===state.current?"current":"locked"}">
+      <div class="route-num">${discovered(i)?x.stamp:String(i+1).padStart(2,"0")}</div>
+      <div><b>${discovered(i)?x.town:i===state.current?"次の出会い":"？？？"}</b><div class="route-region">${x.region} ・ ${discovered(i)?x.name:"未発見"}</div></div>
+      <div>${discovered(i)?`<b style="color:#e2a72c">${starText(state.stars[i]||1)}</b>`:i===state.current?"➡️":"🔒"}</div>
+    </div>`).join("")}</div>
+  <div class="mode-note">旅MAPはゲーム用の模式図 / not to scale</div>
+  ${state.current<12?`<button id="encounterBtn" class="btn primary">No.${String(state.current+1).padStart(2,"0")} のまちのコを探す</button>`:`<button id="endingBtn" class="btn gold">12体クリアのエンディングを見る</button>`}
+ </div>`;
+ document.getElementById("settings").onclick=()=>document.getElementById("resetModal").classList.add("show");
+ const eb=document.getElementById("encounterBtn"); if(eb) eb.onclick=encounter;
+ const endb=document.getElementById("endingBtn"); if(endb) endb.onclick=ending;
+}
+
+function encounter(){
+ setNav(false);state.wrong=0;state.hints=0;save();const x=c();
+ document.getElementById("screen").innerHTML=`
+ <div class="stack">
+  <button id="backHub" class="btn">← 旅MAPに戻る</button>
+  <div class="eyebrow">MYSTERY No.${String(x.id).padStart(2,"0")}</div>
+  <h2 class="hub-title">このコは、どこの町のコ？</h2>
+  ${spriteDiv(state.current,"charimg mystery","未発見のまちのコ")}
+  <div class="quote">${x.intro}</div>
+  <div id="hintList" class="stack"></div>
+  <button id="hintBtn" class="btn gold">💡 ヒントを見る（★評価に影響）</button>
+  <div class="choices">${x.choices.map(q=>`<button class="choice" type="button">${q}</button>`).join("")}</div>
+  <div id="answerMsg" class="msg" aria-live="polite"></div>
+ </div>`;
+ document.getElementById("backHub").onclick=hub;
+ document.getElementById("hintBtn").onclick=()=>{
+   if(state.hints<3){const d=document.createElement("div");d.className="hint";d.innerHTML=`<b>ヒント ${state.hints+1}</b><br>${x.hints[state.hints]}`;document.getElementById("hintList").appendChild(d);state.hints++;save();if(state.hints===3)document.getElementById("hintBtn").disabled=true;}
+ };
+ document.querySelectorAll(".choice").forEach(b=>b.onclick=()=>{
+   if(b.textContent===x.town){reveal();}
+   else{state.wrong++;save();document.getElementById("answerMsg").textContent="おしい！ もう一度考えてみよう。";}
+ });
+}
+
+function burst(){
+ const box=document.createElement("div");box.className="confetti";
+ for(let i=0;i<20;i++){const p=document.createElement("i");p.style.left=(10+Math.random()*80)+"%";p.style.setProperty("--dx",(-90+Math.random()*180)+"px");p.style.animationDelay=(Math.random()*.18)+"s";box.appendChild(p);}
+ document.getElementById("screen").prepend(box);setTimeout(()=>box.remove(),1500);
+}
+function reveal(){
+ const x=c(), s=starsForCurrent();
+ state.stars[state.current]=Math.max(state.stars[state.current]||0,s);save();
+ document.getElementById("screen").innerHTML=`
+ <div class="stack reveal">
+  <div class="reveal-title">✨ まちのコ発見！ ✨</div>
+  ${spriteDiv(state.current,"charimg",x.name)}
+  <div><span class="townname">${x.town}</span></div>
+  <div class="charname">${x.name}</div>
+  <div class="stars">${starText(s)}</div>
+  <div class="score-note">${s===3?"ノーヒント正解！ すごい！":s===2?"いい推理！":"ヒントを使って発見できました！"}</div>
+  <button id="toMini" class="btn primary">ご当地ミニゲームへ</button>
+ </div>`;
+ burst();document.getElementById("toMini").onclick=miniGame;
+}
+
+function miniGame(){
+ const x=c();clearTimer();
+ document.getElementById("screen").innerHTML=`
+ <div class="stack">
+  <div class="eyebrow">LOCAL MISSION</div>
+  <div class="mini" id="miniStage"><h3>${x.miniTitle}</h3><p class="small">${x.miniDesc}</p><div id="miniBody"></div></div>
+  <div id="miniMsg" class="msg" aria-live="polite"></div>
+  <button id="miniDone" class="btn primary" disabled>プロフィールを開く</button>
+ </div>`;
+ const success=(t="クリア！")=>{document.getElementById("miniMsg").textContent="✨ "+t;document.getElementById("miniDone").disabled=false;};
+ const body=document.getElementById("miniBody");
+ if(x.miniType==="collect"){
+   let hits=0,targetNeed=x.miniTarget==="🦀"||x.miniTarget==="🪵"?4:5;
+   body.innerHTML=`<div class="collect-grid">${x.miniPool.map(v=>`<button type="button" class="collect" data-v="${v}">${v}</button>`).join("")}</div>`;
+   body.querySelectorAll(".collect").forEach(b=>b.onclick=()=>{if(b.classList.contains("hit"))return;if(b.dataset.v===x.miniTarget){b.classList.add("hit");hits++;if(hits>=targetNeed)success("全部集めた！");}else document.getElementById("miniMsg").textContent="それじゃないみたい！";});
+ } else if(x.miniType==="timing"){
+   body.innerHTML=`<div class="timing-track"><div class="timing-dot" id="dot"></div></div><button type="button" id="tapTiming" class="btn blue">ここ！</button>`;
+   let pos=0,dir=1;timerId=setInterval(()=>{pos+=dir*2.4;if(pos>=92){pos=92;dir=-1}if(pos<=0){pos=0;dir=1}document.getElementById("dot").style.left=pos+"%";},34);
+   document.getElementById("tapTiming").onclick=()=>{if(pos>=34&&pos<=62){clearTimer();document.getElementById("tapTiming").disabled=true;success("ベストタイミング！");}else document.getElementById("miniMsg").textContent="おしい！ 緑のゾーンを狙おう。";};
+ } else if(x.miniType==="choice"){
+   body.innerHTML=`<div class="stack" style="margin-top:18px">${x.miniOptions.map((v,i)=>`<button type="button" class="btn miniChoice" data-i="${i}">${v}</button>`).join("")}</div>`;
+   body.querySelectorAll(".miniChoice").forEach(b=>b.onclick=()=>{if(+b.dataset.i===x.miniCorrect){body.querySelectorAll("button").forEach(z=>z.disabled=true);success("大正解！");}else document.getElementById("miniMsg").textContent="おしい！ 別の答えを選んでみよう。";});
+ } else {
+   const seq=x.sequence||["青","桃","水"];let answer=[];
+   body.innerHTML=`<div id="memoryView" class="memory-row">${seq.map(v=>`<div class="memory-chip" data-color="${v}">${v}</div>`).join("")}</div><p class="small">3秒で隠れます。順番を覚えてね。</p><div id="memoryBtns" class="memory-row"><button class="memory-chip" data-v="青" data-color="青">青</button><button class="memory-chip" data-v="桃" data-color="桃">桃</button><button class="memory-chip" data-v="水" data-color="水">水</button></div>`;
+   document.getElementById("memoryBtns").style.visibility="hidden";
+   setTimeout(()=>{document.getElementById("memoryView").classList.add("memory-hide");document.getElementById("memoryBtns").style.visibility="visible";},2200);
+   document.querySelectorAll("#memoryBtns button").forEach(b=>b.onclick=()=>{answer.push(b.dataset.v);if(answer.length===seq.length){if(answer.join("|")===seq.join("|")){document.querySelectorAll("#memoryBtns button").forEach(z=>z.disabled=true);success("ぴったり同じ順番！");}else{answer=[];document.getElementById("miniMsg").textContent="順番が違うみたい。もう一度！";}}});
+ }
+ document.getElementById("miniDone").onclick=profile;
+}
+function clearTimer(){if(timerId){clearInterval(timerId);timerId=null;}}
+
+function profile(){
+ clearTimer();const x=c(), s=state.stars[state.current]||1;const heart=Math.min(3,1+(s===3?1:0));
+ state.hearts[state.current]=Math.max(state.hearts[state.current]||0,heart);
+ document.getElementById("screen").innerHTML=`
+ <div class="stack">
+  <div class="profile-head">${spriteDiv(state.current,"charimg",x.name)}<div class="townname">${x.town}</div><div class="charname">${x.name}</div><div class="heart">${heartText(heart)}</div><div class="small">なかよし度</div></div>
+  <div class="info-grid">
+    <div class="info"><span class="chip">モチーフ</span><div>${x.motif}</div></div>
+    <div class="info"><span class="chip">性格</span><div>${x.personality}</div></div>
+    <div class="info"><span class="chip">おすすめグルメ</span><div>${x.gourmet}</div></div>
+    <div class="info"><span class="chip">行ってみたい場所</span><div>${x.spot}</div></div>
+  </div>
+  <div class="postcard">${spriteDiv(state.current,"",x.name)}<div><b>旅のしおりを獲得！</b><br><span class="small">${x.town}のページが図鑑に追加されました。</span></div></div>
+  <button id="invite" class="btn primary">村へ招待する</button>
+ </div>`;
+ document.getElementById("invite").onclick=invite;
+}
+function invite(){
+ const i=state.current,x=c();
+ if(!state.found.includes(i))state.found.push(i);
+ if(!state.facilities.includes(i))state.facilities.push(i);
+ if(!state.stamps.includes(i))state.stamps.push(i);
+ state.current=Math.min(12,state.current+1);state.started=true;save();progress();
+ document.getElementById("screen").innerHTML=`
+ <div class="stack" style="text-align:center">
+   <div style="font-size:54px">🎉</div><h2 class="hub-title">新しい仲間が増えました！</h2>
+   ${spriteDiv(state.current,"charimg",x.name)}
+   <div class="stamp-card"><div class="stamp-icon">${x.stamp}</div><b>${x.town}スタンプ GET!</b><br><span class="small">村に「${x.facility}」が増えました。</span></div>
+   <button id="next" class="btn primary">${state.current>=12?"12体クリア！":"次の町へ"}</button>
+ </div>`;
+ burst();document.getElementById("next").onclick=()=>state.current>=12?ending():hub;
+}
+
+function village(){
+ setNav(true);show("game");progress();setTab("village");
+ document.getElementById("screen").innerHTML=`
+ <div class="stack"><div class="eyebrow">MY HOKKAIDO</div><h2 class="hub-title">わたしの村</h2>
+ <div class="village"><div class="village-grid">${state.facilities.length?state.facilities.map(i=>`<div class="vitem">${spriteDiv(i,"",C[i].name)}<b>${C[i].name}</b><small>${C[i].facility}</small></div>`).join(""):`<div class="vitem"><div style="font-size:44px">🌱</div><b>まだ静かな村</b><small>まちのコを招待しよう</small></div>`}</div></div>
+ <div class="info"><span class="chip">村の成長</span><br>${state.facilities.length} / 12 施設が完成。179市町村版では、ここが自分だけの北海道へ育っていきます。</div></div>`;
+}
+
+function book(){
+ setNav(true);show("game");progress();setTab("book");
+ document.getElementById("screen").innerHTML=`<div class="stack"><div class="eyebrow">MACHINOKO BOOK</div><h2 class="hub-title">まちのコ図鑑</h2><div class="book">${C.map((x,i)=>`<div class="bookcard ${discovered(i)?"":"locked"}">${spriteDiv(i,"",discovered(i)?x.name:"未発見")}<div><b>${String(i+1).padStart(2,"0")} ${discovered(i)?x.name:"？？？"}</b><br><small>${discovered(i)?x.town+" ・ "+heartText(state.hearts[i]||1):"未発見"}</small></div></div>`).join("")}</div></div>`;
+}
+
+function badges(){
+ setNav(true);show("game");progress();setTab("badges");const n=state.found.length;
+ const list=[
+  [1,"はじめての出会い","最初のまちのコを発見","🌱"],
+  [3,"旅のはじまり","3つの町を知る","🧭"],
+  [6,"北海道ビギナー","6つの町を知る","🗺️"],
+  [10,"まちのコファン","10体と仲良くなる","💞"],
+  [12,"プロトタイプ踏破","12体すべてを発見","🏆"]
+ ];
+ document.getElementById("screen").innerHTML=`<div class="stack"><div class="eyebrow">ACHIEVEMENTS</div><h2 class="hub-title">旅の実績</h2><div class="badges">${list.map(([need,title,desc,ico])=>`<div class="badge ${n>=need?"":"locked"}"><div class="badge-icon">${ico}</div><div><b>${title}</b><small>${desc} ${n>=need?"— 達成！":`— あと${need-n}体`}</small></div></div>`).join("")}</div>${n>=12?`<button id="endFromBadge" class="btn gold">エンディングを見る</button>`:""}</div>`;
+ const e=document.getElementById("endFromBadge");if(e)e.onclick=ending;
+}
+
+function ending(){
+ setNav(false);show("game");progress();
+ document.getElementById("screen").innerHTML=`
+ <div class="stack end"><div style="font-size:42px">✨❄️🌿📷🧊✨</div><p><b>12の町を知った。</b></p>
+ <div class="big">北海道には、まだ<br><span style="color:var(--pink)">167</span> の出会いがある。</div>
+ <div class="pct">北海道発見率 ${(12/179*100).toFixed(1)}%</div>
+ <div class="info" style="text-align:left"><span class="chip">ここから先</span><br>次は釧路・弟子屈・登別・積丹・室蘭……。179市町村すべてが、この旅の続きを待っています。</div>
+ <div class="stamp-card"><div class="stamp-icon">🏆</div><b>PROTOTYPE COMPLETE</b><br><span class="small">12体のまちのコと出会いました。</span></div>
+ <p class="sub">179の出会いで、わたしの北海道をつくろう。</p>
+ <button id="toVillageEnd" class="btn primary">完成した村を見る</button>
+ <button id="toBookEnd" class="btn">12体の図鑑を見る</button>
+ </div>`;
+ document.getElementById("toVillageEnd").onclick=village;document.getElementById("toBookEnd").onclick=book;burst();
+}
+
+document.getElementById("newGame").onclick=()=>{state={started:true,current:0,found:[],stars:{},hearts:{},facilities:[],stamps:[],wrong:0,hints:0};save();setNav(false);show("prologue");};
+document.getElementById("continueGame").onclick=()=>{if(state.current>=12)ending();else hub();};
+document.getElementById("startJourney").onclick=()=>{state.started=true;save();hub();};
+document.querySelectorAll("#nav button").forEach(b=>b.onclick=()=>{clearTimer();({map:hub,village,book,badges}[b.dataset.tab])();});
+document.getElementById("cancelReset").onclick=()=>document.getElementById("resetModal").classList.remove("show");
+document.getElementById("confirmReset").onclick=()=>{localStorage.removeItem(KEY);state={started:false,current:0,found:[],stars:{},hearts:{},facilities:[],stamps:[],wrong:0,hints:0};document.getElementById("resetModal").classList.remove("show");setNav(false);title();show("title");};
+
+load();title();
+</script>
+</body>
+</html>
