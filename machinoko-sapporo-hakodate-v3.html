@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>北海道179市町村 まちのコ図鑑 - 札幌→函館</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;background:#061a38;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif}
+#app{max-width:430px;margin:auto;min-height:100svh;background:#0b2850;position:relative;overflow:hidden}
+.screen{display:none;min-height:100svh;position:relative;align-items:center;justify-content:center;background:#0b2850}.screen.active{display:flex;animation:fade .25s ease}
+@keyframes fade{from{opacity:.3;transform:scale(.985)}} canvas{width:100%;height:auto;max-height:100svh;object-fit:contain;display:block}
+.hot{position:absolute;border:0;background:transparent;z-index:5}.hot:active{background:#fff4;border-radius:18px}
+.modal{display:none;position:absolute;inset:0;z-index:10;background:#061b3bd9;padding:18px;align-items:center;justify-content:center}
+.modal.on{display:flex}.panel{width:100%;background:#fff8e9;border:3px solid #ead5ad;border-radius:24px;padding:20px;color:#3b2a22;box-shadow:0 20px 50px #0007}
+.panel h2{margin:0 0 12px}.panel button{width:100%;padding:13px;border:0;border-radius:999px;margin-top:9px;background:#14549c;color:white;font-weight:800;font-size:16px}
+.panel button.alt{background:#e7d2a8;color:#4a351d}.toast{position:fixed;z-index:30;left:50%;bottom:20px;transform:translateX(-50%);background:#102e59ee;color:#fff;border:1px solid #ffffff55;border-radius:999px;padding:10px 14px;font-size:12px;opacity:0;transition:.2s;white-space:nowrap}
+.screen.active{display:flex!important}</style></head><body><div id="app">
+<section class="screen active" data-i="0"><canvas></canvas>
+ <button class="hot" style="left:11%;right:11%;top:74%;height:10%" onclick="go(1)"></button>
+ <button class="hot" style="left:3%;width:29%;bottom:2%;height:8%" onclick="go(5)"></button>
+ <button class="hot" style="left:35%;width:30%;bottom:2%;height:8%" onclick="popup('旅のしおり','札幌でぽろろんと出会い、まちの宝物を集めよう。次は函館・小樽へ旅が続きます。')"></button>
+ <button class="hot" style="right:3%;width:29%;bottom:2%;height:8%" onclick="popup('設定','BGM・効果音・文字サイズなどを、今後ここから変更できるようにします。')"></button>
+</section>
+
+<section class="screen" data-i="1"><canvas></canvas>
+ <button class="hot" style="left:32%;width:35%;top:38%;height:20%" onclick="go(found()?5:2)"></button>
+ <button class="hot" style="left:0;width:20%;bottom:1%;height:9%" onclick="toast('MAPを表示中')"></button>
+ <button class="hot" style="left:20%;width:20%;bottom:1%;height:9%" onclick="go(5)"></button>
+ <button class="hot" style="left:40%;width:20%;bottom:1%;height:9%" onclick="popup('もちもの','🧭 旅のコンパス　📖 旅のしおり')"></button>
+ <button class="hot" style="left:60%;width:20%;bottom:1%;height:9%" onclick="popup('思い出','まだ思い出はありません。ぽろろんと出会うと最初の1枚が増えます。')"></button>
+ <button class="hot" style="left:80%;width:20%;bottom:1%;height:9%" onclick="popup('メニュー','タイトルへ戻ることもできます。','title')"></button>
+</section>
+
+<section class="screen" data-i="2"><canvas></canvas>
+ <button class="hot" style="left:62%;right:3%;bottom:2%;height:10%" onclick="go(3)"></button>
+</section>
+
+<section class="screen" data-i="3"><canvas></canvas>
+ <button class="hot" style="left:3%;width:46%;top:35%;height:27%" onclick="answer(true)"></button>
+ <button class="hot" style="right:3%;width:46%;top:35%;height:27%" onclick="answer(false)"></button>
+ <button class="hot" style="left:3%;width:46%;top:64%;height:27%" onclick="answer(false)"></button>
+ <button class="hot" style="right:3%;width:46%;top:64%;height:27%" onclick="answer(false)"></button>
+</section>
+
+<section class="screen" data-i="4"><canvas></canvas>
+ <button class="hot" style="left:10%;right:10%;bottom:2%;height:11%" onclick="unlock();go(5)"></button>
+</section>
+
+<section class="screen" data-i="5"><canvas></canvas>
+ <button class="hot" style="left:3%;width:54%;top:12%;height:15%" onclick="popup('001 札幌市 ぽろろん','雪の中からひょっこり現れる札幌のまちのコ。好奇心が強く、人懐っこいよ。')"></button>
+ <button class="hot" style="left:3%;width:54%;top:28%;height:13%" onclick="toast('002 函館市はまだ未発見です')"></button>
+ <button class="hot" style="left:3%;width:54%;top:42%;height:13%" onclick="toast('003 小樽市はまだ未発見です')"></button>
+ <button class="hot" style="left:3%;width:54%;top:56%;height:13%" onclick="toast('004 夕張市はまだ未発見です')"></button>
+ <button class="hot" style="left:3%;width:54%;top:70%;height:13%" onclick="toast('005 富良野市はまだ未発見です')"></button>
+ <button class="hot" style="right:2%;width:40%;top:15%;height:70%" onclick="go(6)"></button>
+</section>
+
+<section class="screen" data-i="6"><canvas></canvas>
+ <button class="hot" style="left:2%;width:48%;bottom:2%;height:11%" onclick="go(8)"></button>
+ <button class="hot" style="right:2%;width:48%;bottom:2%;height:11%" onclick="go(7)"></button>
+ <button class="hot" style="left:32%;width:36%;top:38%;height:23%" onclick="popup('札幌市','ぽろろんと出会った町。3つの「まちの宝物」を見つけました。')"></button>
+</section>
+
+<section class="screen" data-i="7"><canvas></canvas>
+ <button class="hot" style="left:3%;right:3%;top:11%;height:24%" onclick="popup('札幌ラーメン','ぽろろんと出会って見つけた、札幌のまちの宝物。')"></button>
+ <button class="hot" style="left:3%;right:3%;top:37%;height:24%" onclick="popup('さっぽろ雪まつり','冬の札幌を彩る、まちの宝物。')"></button>
+ <button class="hot" style="left:3%;right:3%;top:63%;height:24%" onclick="popup('時計台','札幌の風景を象徴する、まちの宝物。')"></button>
+ <button class="hot" style="left:0;right:0;bottom:0;height:9%" onclick="go(6)"></button>
+</section>
+
+
+<section class="screen" data-i="8" style="background:linear-gradient(#143d78,#547fb4 45%,#f5d5a5);color:white;padding:18px;display:none;flex-direction:column">
+ <div style="width:100%;text-align:center;margin-top:16px"><small>CHAPTER 2</small><h1 style="margin:5px 0">函館市</h1><p>夜景の光の向こうで、だれかが手を振っている。</p></div>
+ <div style="font-size:120px;margin:30px 0 10px">🦑</div>
+ <div class="panel" style="text-align:left"><h2>？？？「いっしょに夜景、見に行こ？」</h2><p>海と歴史と夜景が大好きな、函館のまちのコみたい。</p>
+ <button onclick="go(9)">近づいてみる</button></div>
+</section>
+<section class="screen" data-i="9" style="background:linear-gradient(#123568,#315d91);color:white;padding:18px;display:none;flex-direction:column">
+ <div class="panel"><h2>いかりんからのクイズ！</h2><p>函館の有名な景色として知られているものは？</p>
+ <button onclick="hakAnswer(true)">🌃 函館山からの夜景</button>
+ <button class="alt" onclick="hakAnswer(false)">🌻 ひまわり畑</button>
+ <button class="alt" onclick="hakAnswer(false)">🌵 砂漠</button>
+ <button class="alt" onclick="hakAnswer(false)">🏜️ 大砂丘</button></div>
+ <div style="font-size:70px;margin-top:22px">🐦　🦑</div>
+</section>
+<section class="screen" data-i="10" style="background:radial-gradient(circle at 50% 25%,#416da8,#0b2148 65%);color:white;padding:18px;display:none;flex-direction:column">
+ <div style="font-size:90px">✨🦑✨</div><h1>まちのコ発見！</h1>
+ <div class="panel"><small>函館市の まちのコ</small><h1>いかりん</h1><b>002 / 179</b>
+ <p>夜景、海、歴史のまちから新しい仲間が増えました。</p><button onclick="unlockHak();go(11)">図鑑に登録する</button></div>
+</section>
+<section class="screen" data-i="11" style="background:linear-gradient(#8cc6ed,#eef8ff);padding:18px;display:none;flex-direction:column">
+ <div class="panel"><h2>002　函館市　いかりん</h2><p>海と歴史と夜景が大好きな函館のまちのコ。夜になると、からだの星みたいな光がほんのり輝く。</p>
+ <p><b>まちの宝物</b></p><p style="font-size:34px">🌃　🦑　⛪</p><p>函館山の夜景　・　イカ　・　歴史ある街並み</p>
+ <button onclick="go(12)">北海道MAPへ</button></div>
+</section>
+<section class="screen" data-i="12" style="background:linear-gradient(#0e3567,#2f6ba0);color:white;padding:18px;display:none;flex-direction:column">
+ <h2>北海道に2つの光が灯った！</h2><div style="font-size:105px;margin:25px">🗾</div>
+ <div class="panel"><h2>2 / 179</h2><p>札幌 ✨　函館 ✨</p><p>旅はまだ始まったばかり。次の光は、小樽の方角で瞬いている……。</p>
+ <button onclick="popup('次の旅','次は小樽市の「たるり」。ガラスと運河の町へ旅が続きます。')">次の光をさがす</button>
+ <button class="alt" onclick="go(0)">タイトルへ戻る</button></div>
+</section>
+
+<div id="modal" class="modal" onclick="if(event.target===this)closePop()"><div class="panel"><h2 id="mt"></h2><p id="mb"></p><button onclick="closePop()">閉じる</button><button id="extra" class="alt" style="display:none"></button></div></div>
+</div><div id="toast" class="toast"></div>
+<script>
+const crops=[[0,0,368,584],[368,0,408,584],[776,0,408,584],[1184,0,352,584],[0,584,420,440],[420,584,548,440],[968,584,336,440],[1304,584,232,440]];
+const img=new Image();img.src="machinoko-full-ui-v2.png";
+img.onload=()=>document.querySelectorAll("canvas").forEach((c,i)=>draw(c,i));
+function draw(c,i){let [x,y,w,h]=crops[i],d=Math.min(devicePixelRatio||1,2);c.width=w*d;c.height=h*d;c.style.aspectRatio=w+"/"+h;let q=c.getContext("2d");q.scale(d,d);q.drawImage(img,x,y,w,h,0,0,w,h)}
+function go(n){document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));document.querySelector('.screen[data-i="'+n+'"]').classList.add("active");scrollTo(0,0)}
+function found(){return localStorage.getItem("machinoko_sapporo")==="1"} function unlock(){localStorage.setItem("machinoko_sapporo","1")}
+function answer(ok){if(ok){toast("正解！ ぽろろんを見つけた！ ✨");setTimeout(()=>go(4),650)}else toast("おしい！ シマエナガ：あったかい麺料理だよ 🍜")}
+function toast(t){let e=document.getElementById("toast");e.textContent=t;e.style.opacity=1;clearTimeout(window.tt);window.tt=setTimeout(()=>e.style.opacity=0,1500)}
+function popup(t,b,action){document.getElementById("mt").textContent=t;document.getElementById("mb").textContent=b;let x=document.getElementById("extra");if(action==="title"){x.style.display="block";x.textContent="タイトルへ";x.onclick=()=>{closePop();go(0)}}else x.style.display="none";document.getElementById("modal").classList.add("on")}
+function closePop(){document.getElementById("modal").classList.remove("on")}
+
+function hakAnswer(ok){
+ if(ok){toast("正解！ 夜景の光の中から、いかりんが現れた！ ✨");setTimeout(()=>go(10),700)}
+ else toast("おしい！ シマエナガ：夜になるとキラキラする景色だよ 🌃")
+}
+function unlockHak(){localStorage.setItem("machinoko_hakodate","1")}
+
+</script></body></html>
